@@ -1,0 +1,50 @@
+name: Build Native Library
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        abi: [arm64-v8a, armeabi-v7a]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Android NDK
+        run: |
+          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          echo "SDK root: $SDK_ROOT"
+          echo "y" | "$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --install \
+            "ndk;27.0.12077973" 2>&1 | tail -5
+          # Find NDK installation
+          echo "--- Checking NDK ---"
+          ls "$SDK_ROOT/ndk/" 2>/dev/null || echo "No ndk dir at SDK root"
+          ls "$SDK_ROOT/ndk/27.0.12077973/" 2>/dev/null || echo "No NDK 27"
+
+      - name: Configure CMake
+        run: |
+          SDK_ROOT="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          NDK_PATH=$(ls -d "$SDK_ROOT/ndk/"* 2>/dev/null | head -1)
+          echo "Using NDK: $NDK_PATH"
+          cmake -B build -S . \
+            -DCMAKE_TOOLCHAIN_FILE="$NDK_PATH/build/cmake/android.toolchain.cmake" \
+            -DANDROID_ABI=${{ matrix.abi }} \
+            -DANDROID_PLATFORM=android-26 \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Upload .so
+        uses: actions/upload-artifact@v4
+        with:
+          name: libDemo-${{ matrix.abi }}
+          path: build/libDemo.so
