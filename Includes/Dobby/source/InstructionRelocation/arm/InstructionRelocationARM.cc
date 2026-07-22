@@ -96,7 +96,7 @@ uint32_t arm_shift_c(uint32_t val, uint32_t shift_type, uint32_t shift_count, ui
                      uint32_t *carry_out) {
     if (shift_count == 0)
         return val;
-    uint32_t r_val;
+    uint64_t r_val;
     uint32_t carry = carry_in;
     switch (shift_type) {
         case arm_shift_lsl:

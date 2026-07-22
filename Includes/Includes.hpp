@@ -125,6 +125,14 @@
 #include <version>
 #include <format>
 #include <dobby.h>
+
+// LSPosed/Dobby types DobbyHook as dobby_dummy_func_t (void(*)()); keep the
+// original void* / void** call style by forwarding through a thin inline.
+static inline int DobbyHookCompat(void *address, void *replace_func, void **origin_func) {
+    return DobbyHook(address, (dobby_dummy_func_t)replace_func, (dobby_dummy_func_t *)origin_func);
+}
+#define DobbyHook DobbyHookCompat
+
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <imgui_impl_android.h>

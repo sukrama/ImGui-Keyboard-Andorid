@@ -79,8 +79,8 @@ void *input_thread(void *) {
     void* egl = DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
     void* inp = DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
 
-    if (egl) DobbyHook(egl, (dobby_dummy_func_t)_eglSwapBuffers, (dobby_dummy_func_t*)&orig_eglSwapBuffers);
-    if (inp) DobbyHook(inp, (dobby_dummy_func_t)myInput, (dobby_dummy_func_t*)&origInput);
+    if (egl) DobbyHook(egl, (void*)_eglSwapBuffers, (void**)&orig_eglSwapBuffers);
+    if (inp) DobbyHook(inp, (void*)myInput, (void**)&origInput);
 
     return nullptr;
 }
