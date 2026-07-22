@@ -1,6 +1,7 @@
 #ifndef USER_MODE_CLEAR_CACHE_TOOL_ARM64_H
 #define USER_MODE_CLEAR_CACHE_TOOL_ARM64_H
 
+#include "core/arch/CpuRegister.h"
 
 #include "PlatformInterface/globals.h"
 
