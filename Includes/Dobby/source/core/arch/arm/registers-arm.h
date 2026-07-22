@@ -2,7 +2,7 @@
 #define ARCH_ARM_REGISTERS
 
 #include "core/arch/arm/constants-arm.h"
-#include "core/arch/CpuRegister.h"
+#include "core/arch/Cpu.h"
 
 namespace zz {
 namespace arm {
@@ -31,15 +31,15 @@ public:
   }
 
   bool Is(const Register &reg) const {
-    return (reg.reg_id == this->reg_id);
+    return (reg.reg_code_ == this->reg_code_);
   }
 
   bool IsValid() const {
-    return (reg_id != 0);
+    return (reg_code_ != 0);
   }
 
   int code() const {
-    return reg_id;
+    return reg_code_;
   }
 
 private:

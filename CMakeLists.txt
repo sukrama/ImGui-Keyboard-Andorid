@@ -37,8 +37,9 @@ add_library(imgui STATIC
     ${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp
 )
 
-set(DOBBY_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
-set(DOBBY_BUILD_TEST OFF CACHE BOOL "" FORCE)
+set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
+set(BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
+set(BUILD_TEST OFF CACHE BOOL "" FORCE)
 add_subdirectory(${DOBBY_DIR})
 
 add_library(kitty STATIC
@@ -59,6 +60,6 @@ target_link_libraries(Demo
     GLESv2
     GLESv3
     imgui
-    dobby_static
+    dobby
     kitty
 )
