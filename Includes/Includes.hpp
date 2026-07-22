@@ -125,19 +125,16 @@
 #include <version>
 #include <format>
 #include <dobby.h>
-
-// LSPosed/Dobby types DobbyHook as dobby_dummy_func_t (void(*)()); keep the
-// original void* / void** call style by forwarding through a thin inline.
-static inline int DobbyHookCompat(void *address, void *replace_func, void **origin_func) {
-    return DobbyHook(address, (dobby_dummy_func_t)replace_func, (dobby_dummy_func_t *)origin_func);
-}
-#define DobbyHook DobbyHookCompat
-
 #include <imgui.h>
 #include <imgui_internal.h>
 #include <imgui_impl_android.h>
 #include <imgui_impl_opengl3.h>
 #include <jni.hpp>
+
+static inline int DobbyHookCompat(void *address, void *replace_func, void **origin_func) {
+    return DobbyHook(address, (dobby_dummy_func_t)replace_func, (dobby_dummy_func_t *)origin_func);
+}
+#define DobbyHook DobbyHookCompat
 
 inline bool setup;
 inline int glWidth, glHeight;
@@ -150,6 +147,6 @@ HOOKINPUT(void, Input, void *thiz, void *ex_ab, void *ex_ac)
 {
     origInput(thiz, ex_ab, ex_ac);
     if (setup)
-        ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)ex_ab);
+        ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)thiz);
     return;
 }
