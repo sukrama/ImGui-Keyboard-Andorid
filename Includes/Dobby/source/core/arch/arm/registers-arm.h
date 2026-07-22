@@ -2,7 +2,6 @@
 #define ARCH_ARM_REGISTERS
 
 #include "core/arch/arm/constants-arm.h"
-#include "core/arch/Cpu.h"
 
 namespace zz {
 namespace arm {
