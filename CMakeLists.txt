@@ -45,7 +45,8 @@ set(DOBBY_GENERATE_SHARED OFF CACHE BOOL "" FORCE)
 set(BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
 set(BUILD_TEST OFF CACHE BOOL "" FORCE)
 add_subdirectory(${DOBBY_DIR})
-add_subdirectory(${INCLUDES_DIR}/xdl)
+# xdl subdirectory not available in this fork - uncomment when present
+# add_subdirectory(${INCLUDES_DIR}/xdl)
 add_subdirectory(${INCLUDES_DIR}/asmjit Includes/asmjit)
 
 add_library(kitty STATIC
@@ -85,7 +86,7 @@ target_link_libraries(Demo
     imgui
     dobby
     kitty
-    xdl
+    # xdl
     gumpp
     frida-gum
     asmjit
