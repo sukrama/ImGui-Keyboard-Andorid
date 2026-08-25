@@ -160,7 +160,6 @@ void DrawMenu() {
 
         if (ImGui::BeginTabItem("Dumper")) {
             Tool::Dumper();
-            Tool::GameObjectx();
             ImGui::EndTabItem();
         }
 

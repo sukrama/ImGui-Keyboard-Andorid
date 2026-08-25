@@ -7,7 +7,6 @@ namespace Tool {
     void Init();
     void Draw();
     void Dumper();
-    void GameObjectx();
     void DrawTracerTab(bool& changeToToolsTab);
     void CalculateSomething();
     size_t GetHookerCount();

@@ -386,59 +386,6 @@ void Tool::CalculateSomething() {
     }
 }
 
-void Tool::GameObjectx() {
-    struct Entry {
-        std::string className;
-        int count;
-    };
-
-    static std::vector<Entry> entries;
-    static double lastRefresh = -999.0;
-    constexpr double refreshInterval = 3.0;
-
-    double now = ImGui::GetTime();
-    if (now - lastRefresh >= refreshInterval) {
-        lastRefresh = now;
-        entries.clear();
-
-        auto objs = UnityResolve::FindObjectsOfType("UnityEngine.MonoBehaviour");
-
-        std::unordered_map<std::string, int> countMap;
-        for (auto* obj : objs) {
-            if (!obj) continue;
-            auto klass = UnityResolve::GetObjectClass(obj);
-            if (!klass) continue;
-            countMap[klass->name]++;
-        }
-
-        for (auto& [name, count] : countMap)
-            entries.push_back({name, count});
-
-        std::sort(entries.begin(), entries.end(),
-            [](const Entry& a, const Entry& b) { return a.count > b.count; });
-    }
-
-    if (ImGui::BeginTable("##goxtable", 3,
-        ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg |
-        ImGuiTableFlags_ScrollY | ImGuiTableFlags_SizingStretchProp)) {
-        ImGui::TableSetupScrollFreeze(0, 1);
-        ImGui::TableSetupColumn("Index", ImGuiTableColumnFlags_WidthFixed, 50.0f);
-        ImGui::TableSetupColumn("Class", ImGuiTableColumnFlags_WidthStretch);
-        ImGui::TableSetupColumn("Count", ImGuiTableColumnFlags_WidthFixed, 60.0f);
-        ImGui::TableHeadersRow();
-
-        int idx = 0;
-        for (auto& e : entries) {
-            ImGui::TableNextRow();
-            ImGui::TableSetColumnIndex(0); ImGui::Text("%d", idx++);
-            ImGui::TableSetColumnIndex(1); ImGui::TextUnformatted(e.className.c_str());
-            ImGui::TableSetColumnIndex(2); ImGui::Text("%d", e.count);
-        }
-
-        ImGui::EndTable();
-    }
-}
-
 size_t Tool::GetHookerCount() {
     std::lock_guard<std::mutex> lock(HookerData::traceMtx);
     return s_hookerMap.size();
