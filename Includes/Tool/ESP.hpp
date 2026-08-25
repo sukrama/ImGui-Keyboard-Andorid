@@ -80,21 +80,21 @@ inline void Draw() {
     ImU32 col = ImGui::ColorConvertFloat4ToU32(*(ImVec4*)config.color);
 
     // camera world position for distance
-    Vector3 camPos{};
+    UnityResolve::UnityType::Vector3 camPos{};
     if (auto* camT = camera->GetTransform())
         camPos = camT->GetPosition();
 
     std::lock_guard<std::mutex> lock(TargetsMtx());
     for (auto* t : Targets()) {
         if (!t) continue;
-        Vector3 pos = t->GetPosition();               // feet
+        auto pos = t->GetPosition();              // feet
         if (pos.x == 0.f && pos.y == 0.f && pos.z == 0.f) continue;
 
-        Vector3 feetS = camera->WorldToScreenPoint(pos);
+        auto feetS = camera->WorldToScreenPoint(pos);
         if (feetS.z < 1.f) continue;                  // behind camera
 
-        Vector3 headPos = pos; headPos.y += 1.7f;     // head anchor
-        Vector3 headS = camera->WorldToScreenPoint(headPos);
+        UnityResolve::UnityType::Vector3 headPos = pos; headPos.y += 1.7f;     // head anchor
+        auto headS = camera->WorldToScreenPoint(headPos);
 
         float xF = feetS.x;
         float yFeet = H - feetS.y;
@@ -103,7 +103,7 @@ inline void Draw() {
         if (boxH <= 0.f) continue;
         float boxW = boxH * 0.6f;
 
-        float dist = sqrtf(Vector3{pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z}.Length());
+        float dist = sqrtf(UnityResolve::UnityType::Vector3{pos.x - camPos.x, pos.y - camPos.y, pos.z - camPos.z}.Length());
 
         char label[128]{};
         if (config.name && config.distance) {
