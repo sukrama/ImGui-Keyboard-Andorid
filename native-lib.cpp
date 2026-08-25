@@ -1,11 +1,4 @@
 #include <Includes.hpp>
-#include <array>
-#include <atomic>
-#include <chrono>
-#include <cmath>
-#include <cstring>
-#include <string>
-#include <vector>
 
 void DrawMenu() {
     const char* title = "Kobtols";
