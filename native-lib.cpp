@@ -1,4 +1,5 @@
 #include <Includes.hpp>
+#include <Tool/ESP.hpp>
 
 void DrawMenu() {
     const char* title = "Kobtols";
@@ -163,6 +164,11 @@ void DrawMenu() {
             ImGui::EndTabItem();
         }
 
+        if (ImGui::BeginTabItem("ESP")) {
+            ESP::SettingsUI();
+            ImGui::EndTabItem();
+        }
+
         if (ImGui::BeginTabItem("Settings")) {
             ImGui::Separator();
             ImGui::Text("Display");
@@ -268,6 +274,7 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
     Keyboard::Update();
     Unity::ProcessInput();
     DrawMenu();
+    ESP::Draw();
     {
         auto now = std::chrono::high_resolution_clock::now();
         float elapsed = std::chrono::duration<float>(now - wmStart).count();
