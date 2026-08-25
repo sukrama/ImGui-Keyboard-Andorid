@@ -165,7 +165,7 @@ void DrawMenu() {
         }
 
         if (ImGui::BeginTabItem("ESP")) {
-            ESP::SettingsUI();
+            ESP_TESTER::UI();
             ImGui::EndTabItem();
         }
 
@@ -274,7 +274,7 @@ EGLBoolean _eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
     Keyboard::Update();
     Unity::ProcessInput();
     DrawMenu();
-    ESP::Draw();
+    ESP_TESTER::DrawESP(ImGui::GetForegroundDrawList(), glWidth, glHeight);
     {
         auto now = std::chrono::high_resolution_clock::now();
         float elapsed = std::chrono::duration<float>(now - wmStart).count();
